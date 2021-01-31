@@ -1,8 +1,8 @@
 <template>
   <div id="app">
     <Form @submitForm="onFormSubmit"/>
-    <TotalBalance :total="totalBalance"/>
-    <BudgetList :list="list" @deleteItem="onDeleteItem"/>
+    <TotalBalance :changeStyle="changeStyle" :total="totalBalance" />
+    <BudgetList :changeStyle="changeStyle" :list="list" @onDeleteItem="deleteItem"/>
   </div>
 </template>
 
@@ -18,7 +18,9 @@ export default {
     TotalBalance,
     Form,
   },
+
   data: () => ({
+    type: "all",
     list: {
       1: {
         type: "INCOME",
@@ -33,25 +35,50 @@ export default {
         id: 2,
       },
     },
+    
   }),
+
   computed: {
+
     totalBalance() {
       return Object.values(this.list).reduce( (acc, item) => (acc + item.value), 0);
-    }
+    },
+    
   },
   methods: {
-    onDeleteItem(id) {
-      this.$delete(this.list, id);
-    },
     onFormSubmit(data){
       const newObj = {
         ...data, 
         id: String(Math.random()),
       };
-
+      newObj.value = this.checkValue(newObj);
       this.$set(this.list, newObj.id, newObj);
+    },
+    
+    checkValue({type, value}){
+        if ((type === "INCOME" && value < 0) || (type === "OUTCOME" && value > 0 )){
+          return value *= -1;
+        }
+        return value;
+    },
+
+    changeStyle(value = 0) {
+      if (value > 0) {
+        return "green";
+      }
+      else if (value < 0) {
+        return "red";
+      }
+      return "black";
+    },
+
+    deleteItem(id) {
+      const question = `Are you sure you want to delete the item '${this.list[id].comment}'?`;
+      if(confirm(question)) {
+        this.$delete(this.list, id);
+      } 
     }
-  }
+  },
 }
 </script>
 
@@ -63,5 +90,16 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+.red {
+  color: red;
+}
+
+.black {
+  color: black;
+}
+
+.green {
+  color: green;
 }
 </style>

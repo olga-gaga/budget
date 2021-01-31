@@ -19,6 +19,14 @@
 </template>
 
 <script>
+const validateValue = (rule, value, callback) => {
+        if (value === 0) {
+          callback(new Error('Please don`t enter 0'));
+        } else {
+          callback();
+        }
+};
+
 export default {
     name: "Form",
     data: () => ({
@@ -29,12 +37,11 @@ export default {
         },
         rules: {
             type: [ { required: true, message: "Please select type", trigger: "blur" } ],
-
             comment: [ { required: true, message: "Please input comment", trigger: "blur" } ],
-
             value: [ 
                 { required: true, message: "Please input value", trigger: "change" }, 
                 { type: "number", message: "Value must be a number", trigger: "change" },
+                { validator: validateValue, trigger: 'blur' },
             ],
         }
     }),
@@ -56,8 +63,8 @@ export default {
     max-width: 500px;
     margin:auto;
 }
-
 .type-select{
     width: 100%;
 }
 </style>
+© 2021 GitHub, Inc.

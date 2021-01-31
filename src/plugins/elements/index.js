@@ -11,6 +11,7 @@ import {
     Select,
     Option,
     Alert,
+    Row,
 } from 'element-ui';
 
 const elements = [
@@ -22,6 +23,7 @@ const elements = [
     Select,
     Option,
     Alert,
+    Row,
 ];
 //Installing English
 locale.use(lang);
