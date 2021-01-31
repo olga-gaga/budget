@@ -63,7 +63,6 @@ export default {
             this.type = type;
         },
     },
-
 }
 </script>
 
@@ -72,5 +71,4 @@ export default {
     max-width: 500px;
     margin: auto;
 }
-
 </style>

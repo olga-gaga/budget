@@ -10,7 +10,6 @@
 import BudgetList from '@/components/BudgetList.vue';
 import TotalBalance from '@/components/TotalBalance.vue';
 import Form from '@/components/Form.vue';
-
 export default {
   name: 'App',
   components: {
@@ -18,7 +17,6 @@ export default {
     TotalBalance,
     Form,
   },
-
   data: () => ({
     type: "all",
     list: {
@@ -37,9 +35,7 @@ export default {
     },
     
   }),
-
   computed: {
-
     totalBalance() {
       return Object.values(this.list).reduce( (acc, item) => (acc + item.value), 0);
     },
@@ -61,7 +57,6 @@ export default {
         }
         return value;
     },
-
     changeStyle(value = 0) {
       if (value > 0) {
         return "green";
@@ -71,15 +66,11 @@ export default {
       }
       return "black";
     },
-
     deleteItem(id) {
-      const question = `Are you sure you want to delete the item '${this.list[id].comment}'?`;
-      if(confirm(question)) {
-        this.$delete(this.list, id);
-      } 
-    }
-  },
-}
+      this.$delete(this.list, id);
+    },
+    }, 
+  }
 </script>
 
 <style>
@@ -94,11 +85,9 @@ export default {
 .red {
   color: red;
 }
-
 .black {
   color: black;
 }
-
 .green {
   color: green;
 }

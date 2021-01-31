@@ -3,13 +3,23 @@
         <i :class="icon"></i>
         <span class="budget-comment"> {{ item.comment }} </span>
         <span class="budget-value" :class="color"> {{ item.value }} </span>
-        <ElButton type="danger" size="mini" @click="deleteItem(item.id)">Delete</ElButton>.
+        <ElButton type="danger" size="mini" @click="dialogVisible=true">Delete</ElButton>
+        
+        <ElDialog :visible.sync="dialogVisible" width="30%" >
+            <span>Are you sure you want to delete the item{{ comment }}?</span>
+            <span slot="footer" class="dialog-footer">
+                <ElButton @click="onConfirmClick" value="false">Cancel</ElButton>
+                <ElButton type="primary" @click="onConfirmClick" value="true">Confirm</ElButton>
+            </span>
+        </ElDialog>
     </div>
 </template>
 
 <script>
 export default {
     name: "BudgetListItem",
+    components: {
+    },
     props: {
         item: {
             type: Object,
@@ -18,10 +28,21 @@ export default {
             type: Function,
         }
     },
+    data: () => ({
+        dialogVisible: false,
+    }),
     methods: {
-        deleteItem(id) {
-            this.$emit("deleteItem", id);
-        }
+        confirm() {
+            this.visible = true;
+        },
+        onConfirmClick(e) {
+            
+            const button = e.target.closest('button');
+            if(button && button.value === "true"){
+                this.$emit("deleteItem", this.item.id);
+            }
+            this.dialogVisible = false;
+        },
     },
     computed: {
         color:  {
@@ -36,8 +57,16 @@ export default {
                }
                return 'el-icon-top';
             }
-        }
-    },
+        },
+        comment: {
+            get(){
+                if(this.item.comment) {
+                    return ` with comment "${this.item.comment}"`;
+                }
+                return "";
+            }
+        },
+    }
 }
 </script>
 
